@@ -1,29 +1,24 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { addPatient, deletePatient } from '../redux/actions';
+import { addPatient, deletePatient } from '../redux/patientSlice';
 
-// Custom Hook - hides all Redux logic in one place
-    function usePatient() {
-      // Read patients from Redux store
-      const patients = useSelector((state) => state.patients);
+function usePatient() {
+  // state.patient.patients  ← "patient" is the slice name in store
+  const patients = useSelector((state) => state.patient.patients);
+  const dispatch = useDispatch();
 
-      // Get dispatch to send actions
-      const dispatch = useDispatch();
+  const handleAddPatient = (name) => {
+    dispatch(addPatient(name));
+  };
 
-      // Add a new patient
-      const handleAddPatient = (name) => {
-        dispatch(addPatient(name));
-      };
+  const handleDeletePatient = (index) => {
+    dispatch(deletePatient(index));
+  };
 
-      // Delete patient by index
-      const handleDeletePatient = (index) => {
-        dispatch(deletePatient(index));
-      };
-
-      return {
-        patients,
-        addPatient: handleAddPatient,
-        deletePatient: handleDeletePatient,
-      };
-    }
+  return {
+    patients,
+    addPatient: handleAddPatient,
+    deletePatient: handleDeletePatient,
+  };
+}
 
 export default usePatient;
